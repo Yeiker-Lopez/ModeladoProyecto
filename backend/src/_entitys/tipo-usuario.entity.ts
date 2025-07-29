@@ -8,7 +8,7 @@ export class TipoUsuario {
     id: number;
 
     @Column()
-    nombre: string;
+    nombre: string; // 'Administrador' | 'Cliente'
 
     @OneToMany(() => Usuario, usuario => usuario.tipoUsuario)
     usuarios: Usuario[];

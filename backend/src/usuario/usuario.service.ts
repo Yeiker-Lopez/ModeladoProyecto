@@ -80,8 +80,6 @@ export class UsuarioService {
         const claveEncriptada = await bcrypt.hash(claveTemporal, 10);
 
         const nuevoUsuario = this.usuarioRepo.create({
-            nombres,
-            apellidos,
             correo,
             clave: claveEncriptada,
             tipoUsuario,
@@ -103,10 +101,8 @@ export class UsuarioService {
         usuario.clave = claveEncriptada;
         await this.usuarioRepo.save(usuario);
 
-        const nombreCompleto = `${usuario.nombres} ${usuario.apellidos}`;
         const baseLink = 'http://localhost:4200/login';
         await this.enviarCredencialesCorreo(
-            nombreCompleto,
             usuario.correo,
             claveTemporal,
             baseLink
@@ -115,7 +111,7 @@ export class UsuarioService {
         return { message: 'Nueva clave temporal generada y enviada por correo' };
     }
 
-  private async enviarCredencialesCorreo(nombre: string,  email: string, clave: string, link: string) {
+  private async enviarCredencialesCorreo(email: string, clave: string, link: string) {
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -143,7 +139,6 @@ export class UsuarioService {
                 <div style="font-family: Arial, sans-serif; color: #2E4A62; line-height: 1.6; text-align: center;">
                     <img src="cid:logoHeader" alt="Logo EntertainHub" style="width: 200px; margin-bottom: 20px;">
                     <h1 style="color: #7b2cbf;">Bienvenido a EntertainHub</h1>
-                    <p>Estimado/a <strong>${nombre}</strong>,</p>
                     <p>Se ha creado su cuenta de acceso a nuestra plataforma. A continuación encontrará sus credenciales de acceso:</p>
                     <div style="background-color: #f0e7ff; padding: 15px; margin: 20px auto; border-radius: 8px; width: 80%; text-align: center;">
                         <p style="margin: 0; color: #2E4A62"><strong>Usuario:</strong> ${email}</p>
