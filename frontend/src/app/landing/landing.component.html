@@ -1,0 +1,97 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EntertainHub | Suscripciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+</head>
+
+<body>
+    <header>
+        <h1>EntertainHub</h1>
+        <nav>
+            <a (click)="login()">Iniciar Sesión</a>
+
+        </nav>
+    </header>
+
+    <section id="Inicio" class="hero">
+        <div class="container">
+            <div class="brand-name">
+                <span class="word">
+                    <span class="letter" data-letter="E" style="--i:0">E</span>
+                    <span class="letter" data-letter="N" style="--i:1">N</span>
+                    <span class="letter" data-letter="T" style="--i:2">T</span>
+                    <span class="letter" data-letter="E" style="--i:3">E</span>
+                    <span class="letter" data-letter="R" style="--i:4">R</span>
+                    <span class="letter" data-letter="T" style="--i:5">T</span>
+                    <span class="letter" data-letter="A" style="--i:6">A</span>
+                    <span class="letter" data-letter="I" style="--i:7">I</span>
+                    <span class="letter" data-letter="N" style="--i:8">N</span>
+                </span>
+                <span class="word">
+                    <span class="letter" data-letter="H" style="--i:9">H</span>
+                    <span class="letter" data-letter="U" style="--i:10">U</span>
+                    <span class="letter" data-letter="B" style="--i:11">B</span>
+                </span>
+            </div>
+            <div class="subtitle">STREAMING UNIFICADO DE AUDIO Y VIDEO</div>
+            <div class="glow-line"></div>
+        </div>
+    </section>
+
+
+    <section class="planes" id="planes">
+        <h2>Planes de Suscripción</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Solo Audio</h3>
+                <p>Ideal para los amantes de la música.</p>
+                <div class="price">$4.99 / mes</div>
+                <ul>
+                    <li>Acceso a todo el catálogo musical</li>
+                    <li>Playlists personalizadas</li>
+                    <li>Modo offline de audio</li>
+                </ul>
+                <!-- <button>Elegir Audio</button> -->
+            </div>
+            <div class="card">
+                <h3>Solo Video</h3>
+                <p>Series, películas y documentales sin límites.</p>
+                <div class="price">$6.99 / mes</div>
+                <ul>
+                    <li>Cine y TV sin interrupciones</li>
+                    <li>Video HD y Ultra HD</li>
+                    <li>Contenido exclusivo</li>
+                </ul>
+                <!-- <button>Elegir Video</button> -->
+            </div>
+            <div class="card">
+                <h3>Combo Premium</h3>
+                <p>La experiencia completa en un solo plan.</p>
+                <div class="price">$9.99 / mes</div>
+                <ul>
+                    <li>Todo el audio + video</li>
+                    <li>Modo offline en ambos</li>
+                    <li>Recomendaciones cruzadas</li>
+                </ul>
+                <!-- <button>Elegir Premium</button> -->
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits" id="beneficios">
+        <h2>¿Por qué elegir EntertainHub?</h2>
+        <p>Porque combina lo mejor de la música con lo mejor del cine. Con perfiles personalizados, contenido offline y
+            recomendaciones inteligentes, nunca te quedarás sin qué disfrutar.</p>
+    </section>
+
+    <section class="cta">
+        <h2>¿Listo para comenzar?</h2>
+        <button (click)="login()">Iniciar sesión</button>
+    </section>
+
+    <footer>
+        &copy; 2025 EntertainHub. Todos los derechos reservados.
+    </footer>
+</body>

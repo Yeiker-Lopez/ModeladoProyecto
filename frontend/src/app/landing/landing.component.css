@@ -1,0 +1,390 @@
+ * {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+     font-family: 'Poppins', sans-serif;
+ }
+
+ body {
+     background-color: #000;
+     color: #fff;
+     line-height: 1.6;
+ }
+
+ header {
+     background: #111;
+     padding: 20px 40px;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+ }
+
+ header h1 {
+     color: #e50914;
+     font-size: 28px;
+ }
+
+ nav a {
+     color: #fff;
+     margin-left: 20px;
+     text-decoration: none;
+     font-weight: 500;
+     transition: color 0.3s ease;
+     cursor: pointer;
+ }
+
+ nav a:hover {
+     color: #e50914;
+ }
+
+ .letter::before {
+     content: attr(data-letter);
+     position: absolute;
+     top: 0;
+     left: 0;
+     color: #e50914;
+     opacity: 0;
+     transform: translateY(-10px);
+     animation: glitch 0.3s ease-out forwards;
+     animation-delay: calc(var(--i) * 0.1s + 0.5s);
+ }
+
+ .letter:hover {
+     color: #e50914;
+     transform: translateY(-5px) scale(1.1);
+     transition: all 0.3s ease;
+     text-shadow: 0 0 20px #e50914;
+ }
+
+ .particle,
+ .pulse-dot {
+     background: #e50914;
+ }
+
+ .glow-line {
+     background: linear-gradient(90deg, transparent, #e50914, transparent);
+ }
+
+ body::before {
+     background: radial-gradient(circle at 50% 50%, rgba(229, 9, 20, 0.05) 0%, transparent 70%);
+ }
+
+ .letter {
+     display: inline-block;
+     opacity: 0;
+     transform: translateY(50px) rotateX(90deg);
+     animation: letterReveal 0.8s ease-out forwards;
+     position: relative;
+ }
+
+ .letter::before {
+     content: attr(data-letter);
+     position: absolute;
+     top: 0;
+     left: 0;
+     color: #ff0000;
+     opacity: 0;
+     transform: translateY(-10px);
+     animation: glitch 0.3s ease-out forwards;
+     animation-delay: calc(var(--i) * 0.1s + 0.5s);
+ }
+
+ .letter:hover {
+     color: #ff0000;
+     transform: translateY(-5px) scale(1.1);
+     transition: all 0.3s ease;
+     text-shadow: 0 0 20px #ff0000;
+ }
+
+ @keyframes letterReveal {
+     0% {
+         opacity: 0;
+         transform: translateY(50px) rotateX(90deg);
+     }
+
+     50% {
+         opacity: 0.5;
+         transform: translateY(0) rotateX(45deg);
+     }
+
+     100% {
+         opacity: 1;
+         transform: translateY(0) rotateX(0deg);
+     }
+ }
+
+ @keyframes glitch {
+
+     0%,
+     100% {
+         opacity: 0;
+         transform: translateY(-10px);
+     }
+
+     25% {
+         opacity: 1;
+         transform: translateY(-5px) translateX(2px);
+     }
+
+     50% {
+         opacity: 1;
+         transform: translateY(-5px) translateX(-2px);
+     }
+
+     75% {
+         opacity: 1;
+         transform: translateY(-5px) translateX(1px);
+     }
+ }
+
+ .particle {
+     position: absolute;
+     width: 2px;
+     height: 2px;
+     background: #ff0000;
+     border-radius: 50%;
+     pointer-events: none;
+     animation: float 3s ease-in-out infinite;
+ }
+
+ @keyframes float {
+
+     0%,
+     100% {
+         transform: translateY(0) translateX(0);
+         opacity: 0;
+     }
+
+     50% {
+         transform: translateY(-100px) translateX(50px);
+         opacity: 1;
+     }
+ }
+
+ .glow-line {
+     position: absolute;
+     bottom: -20px;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 0;
+     height: 2px;
+     background: linear-gradient(90deg, transparent, #ff0000, transparent);
+     animation: lineGrow 2s ease-out forwards;
+     animation-delay: 1.5s;
+ }
+
+ @keyframes lineGrow {
+     0% {
+         width: 0;
+     }
+
+     100% {
+         width: 100%;
+     }
+ }
+
+ .pulse-dot {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     width: 8px;
+     height: 8px;
+     background: #ff0400;
+     border-radius: 50%;
+     animation: pulse 2s ease-in-out infinite;
+     animation-delay: 2s;
+ }
+
+ @keyframes pulse {
+
+     0%,
+     100% {
+         transform: translate(-50%, -50%) scale(1);
+         opacity: 1;
+     }
+
+     50% {
+         transform: translate(-50%, -50%) scale(3);
+         opacity: 0;
+     }
+ }
+
+ .subtitle {
+     font-size: 2rem;
+     font-weight: 400;
+     letter-spacing: 0.5em;
+     margin-top: 2rem;
+     opacity: 0;
+     animation: fadeInUp 1s ease-out forwards;
+     animation-delay: 2.5s;
+     color: #666;
+ }
+
+ @keyframes fadeInUp {
+     0% {
+         opacity: 0;
+         transform: translateY(20px);
+     }
+
+     100% {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ .hero {
+     background: url('https://images.unsplash.com/photo-1600962815706-1f43dbd8a12b') center/cover no-repeat;
+     height: 90vh;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     text-align: center;
+     padding: 0 20px;
+ }
+
+
+ .planes {
+     padding: 60px 20px;
+     text-align: center;
+ }
+
+ .planes h2 {
+     font-size: 2.5rem;
+     margin-bottom: 40px;
+ }
+
+ .cards {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: center;
+     gap: 30px;
+ }
+
+ .card {
+     background-color: #111;
+     padding: 30px 20px;
+     border-radius: 12px;
+     width: 280px;
+     box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+     transition: transform 0.3s ease;
+ }
+
+ .card:hover {
+     transform: translateY(-10px);
+ }
+
+ .card h3 {
+     font-size: 1.5rem;
+     color: #e50914;
+     margin-bottom: 10px;
+ }
+
+ .card p {
+     font-size: 0.95rem;
+     color: #ccc;
+     margin: 10px 0;
+ }
+
+ .price {
+     font-size: 1.8rem;
+     color: #fff;
+     margin: 20px 0;
+ }
+
+ .card ul {
+     list-style: none;
+     padding: 0;
+     margin-bottom: 20px;
+ }
+
+ .card ul li {
+     padding: 8px 0;
+     border-bottom: 1px solid #333;
+ }
+
+ .card button {
+     background-color: #e50914;
+     border: none;
+     padding: 10px 16px;
+     border-radius: 6px;
+     color: white;
+     font-weight: bold;
+     cursor: pointer;
+     transition: background 0.3s ease;
+ }
+
+ .card button:hover {
+     background-color: #b00610;
+ }
+
+ .benefits {
+     background-color: #111;
+     padding: 60px 20px;
+     text-align: center;
+ }
+
+ .benefits h2 {
+     font-size: 2rem;
+     margin-bottom: 30px;
+ }
+
+ .benefits p {
+     max-width: 600px;
+     margin: 0 auto;
+     color: #ccc;
+ }
+
+ .cta {
+     padding: 60px 20px;
+     text-align: center;
+ }
+
+ .cta h2 {
+     font-size: 2rem;
+     margin-bottom: 20px;
+ }
+
+ .brand-name {
+     font-size: 7rem;
+     font-weight: 300;
+     letter-spacing: 0.2em;
+     position: relative;
+     display: inline-block;
+ }
+
+ .cta button {
+     background-color: #e50914;
+     padding: 14px 30px;
+     border: none;
+     border-radius: 8px;
+     font-size: 1rem;
+     color: white;
+     font-weight: bold;
+     cursor: pointer;
+     transition: background 0.3s ease;
+ }
+
+ .cta button:hover {
+     background-color: #b00610;
+ }
+
+ footer {
+     background-color: #000;
+     color: #888;
+     text-align: center;
+     padding: 20px;
+     font-size: 0.9rem;
+ }
+
+ @media (max-width: 768px) {
+     .hero h2 {
+         font-size: 2rem;
+     }
+
+     .cards {
+         flex-direction: column;
+         align-items: center;
+     }
+ }

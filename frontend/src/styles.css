@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+/* styles.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
