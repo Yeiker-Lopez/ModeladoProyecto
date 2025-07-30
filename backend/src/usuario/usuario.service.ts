@@ -59,14 +59,12 @@ export class UsuarioService {
     }
 
     async crearUsuario(data: {
-        nombres: string;
-        apellidos: string;
         correo: string;
         tipoUsuarioId: number;
     }): Promise<Usuario> {
-        const { nombres, apellidos, correo, tipoUsuarioId } = data;
+        const { correo, tipoUsuarioId } = data;
 
-        const existente = await this.usuarioRepo.findOne({ where: [ { correo }] });
+        const existente = await this.usuarioRepo.findOne({ where: [{ correo }] });
         if (existente) {
             throw new ConflictException('Ya existe un usuario con esa cédula o correo.');
         }
@@ -77,6 +75,7 @@ export class UsuarioService {
         }
 
         const claveTemporal = this.generarClaveAleatoria(10);
+        console.log(claveTemporal);
         const claveEncriptada = await bcrypt.hash(claveTemporal, 10);
 
         const nuevoUsuario = this.usuarioRepo.create({
@@ -111,7 +110,7 @@ export class UsuarioService {
         return { message: 'Nueva clave temporal generada y enviada por correo' };
     }
 
-  private async enviarCredencialesCorreo(email: string, clave: string, link: string) {
+    private async enviarCredencialesCorreo(email: string, clave: string, link: string) {
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -129,7 +128,7 @@ export class UsuarioService {
             console.error('La imagen no existe en la ruta:', imagePath);
             throw new Error('La imagen para el correo no fue encontrada.');
         }
-        console.log('clave: '+clave);
+        console.log('clave: ' + clave);
 
         const mailOptions = {
             from: '', // ubicar correo

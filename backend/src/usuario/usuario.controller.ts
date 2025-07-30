@@ -24,8 +24,6 @@ export class UsuarioController {
 
   @Post('crear')
   async crearUsuario(@Body() body: {
-    nombres: string;
-    apellidos: string;
     correo: string;
     tipoUsuarioId: number;
   }) {

@@ -68,7 +68,6 @@ export class AuthService {
                 id: usuario.tipoUsuario.id,
                 nombre: usuario.tipoUsuario.nombre,
             },
-            usuario: `${usuario.nombres} ${usuario.apellidos}`,
         };
 
         const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
@@ -121,7 +120,6 @@ export class AuthService {
                 id: usuario.tipoUsuario.id,
                 nombre: usuario.tipoUsuario.nombre,
             },
-            usuario: `${usuario.nombres} ${usuario.apellidos}`,
         };
 
         const newAccessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
