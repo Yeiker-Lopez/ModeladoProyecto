@@ -24,4 +24,25 @@ export class PerfilService {
             pin
         });
     }
+
+    getContenidoPorTipo(tipo: 'audio' | 'video') {
+        return this.http.get<any[]>(`${this.apiURL}/por-tipo/${tipo}`);
+    }
+
+    actualizarPin(perfilId: number, nuevoPin: string) {
+        return this.http.patch(`${this.apiURL}/${perfilId}/actualizar-pin`, { nuevoPin });
+    }
+
+    getPlaylistsPorPerfil(perfilId: number) {
+        return this.http.get<any[]>(`${this.apiURL}/playlist/${perfilId}`);
+    }
+
+    getDashboardAnalitico(perfilId: number) {
+        return this.http.get<any>(`${this.apiURL}/dashboard/${perfilId}`);
+    }
+
+    getRecomendacionesDesdePlaylists(perfilId: number) {
+        return this.http.get<any[]>(`${this.apiURL}/recomendaciones/${perfilId}`);
+    }
+
 }
