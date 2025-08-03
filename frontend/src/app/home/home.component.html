@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EntertainHub - Inicio</title>
+
+</head>
+
+<body>
+    <header>
+        <h1>EntertainHub</h1>
+
+        <div class="perfil-bar">
+            <span class="perfil-nombre">👤 {{ perfilNombre }}</span>
+            <button (click)="cambiarPin()">Cambiar PIN</button>
+            <button (click)="volverAPerfiles()">Cambiar Perfil</button>
+            <button (click)="logout()">Cerrar Sesión</button>
+        </div>
+    </header>
+    <!-- Overlay para cambio de PIN -->
+    <!-- Overlay para cambio de PIN -->
+    <div class="pin-overlay" *ngIf="mostrarOverlayPin">
+        <div class="pin-modal">
+            <h2>Cambiar PIN</h2>
+
+            <!-- Paso 1: PIN actual -->
+            <div *ngIf="!pinValidado">
+                <label>PIN actual</label>
+                <div class="pin-inputs">
+                    <input maxlength="1" [(ngModel)]="pinActual[0]" (input)="handleInput(pinActual, 0, $event)" />
+                    <input maxlength="1" [(ngModel)]="pinActual[1]" (input)="handleInput(pinActual, 1, $event)" />
+                    <input maxlength="1" [(ngModel)]="pinActual[2]" (input)="handleInput(pinActual, 2, $event)" />
+                    <input maxlength="1" [(ngModel)]="pinActual[3]" (input)="handleInput(pinActual, 3, $event)" />
+                </div>
+                <div class="botones">
+                    <button (click)="validarPin()" [disabled]="cargandoPin">
+                        <span *ngIf="cargandoPin" class="spinner"></span>
+                        <span *ngIf="!cargandoPin">Validar</span>
+                    </button>
+                    <button class="cancelar" (click)="cerrarOverlay()">Cancelar</button>
+                </div>
+            </div>
+
+            <!-- Paso 2: Nuevo PIN -->
+            <div *ngIf="pinValidado">
+                <label>Nuevo PIN</label>
+                <div class="pin-inputs">
+                    <input maxlength="1" [(ngModel)]="pinNuevo[0]" (input)="handleInput(pinNuevo, 0, $event)" />
+                    <input maxlength="1" [(ngModel)]="pinNuevo[1]" (input)="handleInput(pinNuevo, 1, $event)" />
+                    <input maxlength="1" [(ngModel)]="pinNuevo[2]" (input)="handleInput(pinNuevo, 2, $event)" />
+                    <input maxlength="1" [(ngModel)]="pinNuevo[3]" (input)="handleInput(pinNuevo, 3, $event)" />
+                </div>
+                <div class="botones">
+                    <button (click)="guardarPin()" [disabled]="cargandoGuardar">
+                        <span *ngIf="cargandoGuardar" class="spinner"></span>
+                        <span *ngIf="!cargandoGuardar">Guardar</span>
+                    </button>
+                    <button class="cancelar" (click)="cerrarOverlay()">Cancelar</button>
+                </div>
+            </div>
+
+            <p *ngIf="mensajePin" [ngStyle]="{ color: esErrorPin ? '#f44336' : '#4caf50' }">
+                {{ mensajePin }}
+            </p>
+
+        </div>
+    </div>
+
+    <!-- DASHBOARD ANALÍTICO -->
+    <section class="dashboard-analitico">
+        <div class="dash-cards">
+            <div class="dash-card">
+                <h3>🎧 Audios reproducidos</h3>
+                <p>{{ dashboard?.totalAudio }}</p>
+            </div>
+            <div class="dash-card">
+                <h3>🎬 Videos vistos</h3>
+                <p>{{ dashboard?.totalVideo }}</p>
+            </div>
+            <div class="dash-card">
+                <h3>🕒 Tiempo total</h3>
+                <p>{{ convertirTiempo(dashboard?.tiempoTotal) }}</p>
+            </div>
+            <div class="dash-card">
+                <h3>📈 Actividad semanal</h3>
+                <p>{{ dashboard?.incrementoSemanal }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recomendaciones -->
+    <!-- Recomendaciones -->
+    <div class="section-title">✨ Recomendado para ti</div>
+    <div class="carousel">
+        <div class="item" *ngFor="let reco of recomendaciones">
+            <img [src]="reco.portada" alt="Recomendación" />
+            <div class="audio-badge" *ngIf="reco.tipo === 'audio'">AUDIO</div>
+            <div class="video-badge" *ngIf="reco.tipo === 'video'">VIDEO</div>
+            <div class="overlay">{{ reco.titulo }}</div>
+        </div>
+    </div>
+
+
+    <!-- Tus Playlists -->
+    <div class="section-title">🎧 Tus Playlists</div>
+    <div class="carousel">
+        <div class="item" *ngFor="let pl of playlists" (click)="abrirOverlayPlaylist(pl)">
+            <img [src]="pl.portada" alt="Playlist" />
+            <div class="audio-badge" *ngIf="pl.tipo === 'audio'">AUDIO</div>
+            <div class="video-badge" *ngIf="pl.tipo === 'video'">VIDEO</div>
+            <div class="mixta-badge" *ngIf="pl.tipo === 'mixta'">MIXTA</div>
+
+            <div class="overlay">{{ pl.nombre }}</div>
+        </div>
+    </div>
+
+    <!-- Carrusel de Música -->
+    <!-- Audio -->
+    <div class="section-title" *ngIf="mostrarAudio && audios.length">🎵 Música y Podcasts</div>
+    <div class="carousel" *ngIf="mostrarAudio && audios.length">
+        <div class="item" *ngFor="let audio of audios">
+            <img [src]="audio.portada" alt="Audio" />
+            <div class="audio-badge">AUDIO</div>
+            <div class="overlay">{{ audio.titulo }}</div>
+        </div>
+    </div>
+
+    <!-- Video -->
+    <div class="section-title" *ngIf="mostrarVideo && videos.length">🎬 Películas y Series</div>
+    <div class="carousel" *ngIf="mostrarVideo && videos.length">
+        <div class="item" *ngFor="let video of videos">
+            <img [src]="video.portada" alt="Video" />
+            <div class="video-badge">VIDEO</div>
+            <div class="overlay">{{ video.titulo }}</div>
+        </div>
+    </div>
+
+    <!-- Overlay de Playlist -->
+    <!-- Overlay de Playlist (modo lista horizontal compacta) -->
+    <div class="pin-overlay" *ngIf="mostrarOverlayPlaylist">
+        <div class="playlist scrollable-modal">
+            <h2>{{ playlistSeleccionada?.nombre }}</h2>
+
+            <div class="playlist-list">
+                <div class="playlist-item" *ngFor="let c of playlistSeleccionada?.contenidos">
+                    <img [src]="c.portada" alt="Portada" />
+                    <div class="info">
+                        <strong>{{ c.titulo }}</strong>
+                        <p>{{ c.descripcion }}</p>
+                        <span class="badge" [ngClass]="{'audio': c.tipo === 'audio', 'video': c.tipo === 'video'}">{{
+                            c.tipo.toUpperCase() }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="cancelar" (click)="cerrarOverlayPlaylist()">Cerrar</button>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -3,6 +3,8 @@ import { LoginComponent } from './login/login.component';
 import { PermissionsGuard } from './autenticacion/permissions.guard';
 import { PerfilesComponent } from './perfiles/perfiles.component';
 import { LandingComponent } from './landing/landing.component';
+import { HomeComponent } from './home/home.component';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
 
@@ -10,7 +12,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'perfiles', component: PerfilesComponent },
     { path: 'suscripciones', component: LandingComponent },
-
+    { path: 'home', component: HomeComponent },
     { path: '**', redirectTo: 'login', pathMatch: 'full' },
 
 ];

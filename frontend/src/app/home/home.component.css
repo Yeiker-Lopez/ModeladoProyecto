@@ -1,0 +1,410 @@
+   * {
+       box-sizing: border-box;
+       font-family: 'Poppins', sans-serif;
+   }
+
+   body {
+       margin: 0;
+       background-color: #000;
+       color: #fff;
+   }
+
+   header {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       padding: 20px 40px;
+       background-color: #111;
+       border-bottom: 1px solid #222;
+   }
+
+   header h1 {
+       color: #e50914;
+       font-size: 28px;
+   }
+
+   header button {
+       background-color: transparent;
+       color: #fff;
+       border: 1px solid #e50914;
+       padding: 8px 16px;
+       border-radius: 4px;
+       cursor: pointer;
+   }
+
+   .section-title {
+       margin: 40px 0 10px 40px;
+       font-size: 20px;
+       color: #fff;
+   }
+
+   .carousel {
+       display: flex;
+       overflow-x: auto;
+       gap: 20px;
+       padding: 0 40px 20px;
+       scroll-behavior: smooth;
+   }
+
+   .carousel::-webkit-scrollbar {
+       height: 8px;
+   }
+
+   .carousel::-webkit-scrollbar-thumb {
+       background: #e50914;
+       border-radius: 4px;
+   }
+
+   .item {
+       flex: 0 0 auto;
+       width: 180px;
+       height: 260px;
+       background-color: #222;
+       border-radius: 8px;
+       overflow: hidden;
+       position: relative;
+       cursor: pointer;
+       transition: transform 0.3s ease;
+   }
+
+   .item:hover {
+       transform: scale(1.05);
+   }
+
+   .item img {
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+   }
+
+   .item .overlay {
+       position: absolute;
+       bottom: 0;
+       width: 100%;
+       padding: 10px;
+       background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+       color: white;
+       font-size: 14px;
+       text-align: center;
+   }
+
+   .audio-badge {
+       position: absolute;
+       top: 10px;
+       left: 10px;
+       background: #e50914;
+       padding: 4px 8px;
+       border-radius: 4px;
+       font-size: 12px;
+   }
+
+   .video-badge {
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       background: #0099ff;
+       padding: 4px 8px;
+       border-radius: 4px;
+       font-size: 12px;
+   }
+
+   .mixta-badge {
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       background: #ff8c00;
+       padding: 4px 8px;
+       border-radius: 4px;
+       font-size: 12px;
+   }
+
+   .perfil-bar {
+       display: flex;
+       align-items: center;
+       gap: 10px;
+   }
+
+   .perfil-nombre {
+       font-weight: bold;
+       color: #fff;
+       margin-right: 10px;
+   }
+
+   .perfil-bar button {
+       background-color: transparent;
+       color: #fff;
+       border: 1px solid #444;
+       padding: 6px 10px;
+       border-radius: 4px;
+       cursor: pointer;
+       transition: all 0.2s ease;
+   }
+
+   .scrollable-modal {
+       max-height: 90vh;
+       overflow-y: auto;
+       width: 700px;
+   }
+
+   .playlist-list {
+       display: flex;
+       flex-direction: column;
+       gap: 15px;
+       margin-bottom: 20px;
+   }
+
+   .playlist-item {
+       display: flex;
+       gap: 15px;
+       align-items: center;
+       background: #1a1a1a;
+       border-radius: 6px;
+       padding: 10px;
+   }
+
+   .playlist-item:hover {
+       background: #514e4e;
+   }
+
+   .playlist-item img {
+       width: 80px;
+       height: 80px;
+       object-fit: cover;
+       border-radius: 4px;
+   }
+
+   .playlist-item .info {
+       flex: 1;
+       color: #fff;
+   }
+
+   .playlist-item .info strong {
+       display: block;
+       font-size: 16px;
+       margin-bottom: 5px;
+   }
+
+   .playlist-item .info p {
+       font-size: 13px;
+       color: #ccc;
+       margin: 0;
+   }
+
+   .badge {
+       display: inline-block;
+       margin-top: 5px;
+       font-size: 11px;
+       padding: 3px 6px;
+       border-radius: 4px;
+       font-weight: bold;
+   }
+
+   .badge.audio {
+       background: #e50914;
+       color: white;
+   }
+
+   .badge.video {
+       background: #0099ff;
+       color: white;
+   }
+
+   .perfil-bar button:hover {
+       background-color: #e50914;
+       border-color: #e50914;
+   }
+
+   .pin-inputs {
+       display: flex;
+       justify-content: center;
+       gap: 10px;
+       margin-bottom: 20px;
+   }
+
+   .pin-inputs input {
+       width: 40px;
+       height: 50px;
+       text-align: center;
+       font-size: 24px;
+       border: 1px solid #444;
+       background: #222;
+       color: #fff;
+       border-radius: 4px;
+   }
+
+   .pin-overlay {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background: rgba(0, 0, 0, 0.85);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       z-index: 1000;
+   }
+
+   .pin-modal {
+       background: #111;
+       padding: 30px;
+       border-radius: 8px;
+       width: 300px;
+       text-align: center;
+       box-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+   }
+
+   .pin-modal h2 {
+       margin-bottom: 20px;
+       color: #e50914;
+   }
+
+   .pin-modal input {
+       width: 100%;
+       padding: 10px;
+       background: #222;
+       color: white;
+       border: 1px solid #333;
+       border-radius: 4px;
+       margin-bottom: 20px;
+       text-align: center;
+       font-size: 18px;
+       letter-spacing: 4px;
+   }
+
+   .botones {
+       display: flex;
+       justify-content: space-between;
+       gap: 10px;
+   }
+
+   .pin-modal button {
+       flex: 1;
+       padding: 10px;
+       border: none;
+       border-radius: 4px;
+       cursor: pointer;
+       background: #e50914;
+       color: white;
+   }
+
+   .pin-modal .cancelar {
+       background: transparent;
+       border: 1px solid #666;
+   }
+
+
+   .playlist {
+       background: #111;
+       padding: 30px;
+       border-radius: 8px;
+       width: 500px;
+       text-align: center;
+       box-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+   }
+
+   .playlist h2 {
+       margin-bottom: 20px;
+       color: #e50914;
+   }
+
+   .playlist input {
+       width: 100%;
+       padding: 10px;
+       background: #222;
+       color: white;
+       border: 1px solid #333;
+       border-radius: 4px;
+       margin-bottom: 20px;
+       text-align: center;
+       font-size: 18px;
+       letter-spacing: 4px;
+   }
+
+
+   .playlist button {
+       flex: 1;
+       padding: 10px;
+       border: none;
+       border-radius: 4px;
+       cursor: pointer;
+       background: #e50914;
+       color: white;
+   }
+
+   .playlist .cancelar {
+       background: transparent;
+       border: 1px solid #666;
+   }
+
+   .spinner {
+       width: 18px;
+       height: 18px;
+       border: 2px solid white;
+       border-top: 2px solid transparent;
+       border-radius: 50%;
+       display: inline-block;
+       animation: spin 0.6s linear infinite;
+       vertical-align: middle;
+   }
+
+   @keyframes spin {
+       0% {
+           transform: rotate(0deg);
+       }
+
+       100% {
+           transform: rotate(360deg);
+       }
+   }
+
+   @media (max-width: 600px) {
+       header h1 {
+           font-size: 20px;
+       }
+
+       .item {
+           width: 130px;
+           height: 190px;
+       }
+   }
+
+   .dashboard-analitico {
+       padding: 20px 40px;
+       background-color: #111;
+       border-bottom: 1px solid #222;
+   }
+
+   .dash-cards {
+       display: flex;
+       gap: 20px;
+       flex-wrap: wrap;
+   }
+
+   .dash-card {
+       background: #1a1a1a;
+       border-radius: 8px;
+       padding: 20px;
+       flex: 1 1 200px;
+       color: white;
+       text-align: center;
+       border: 1px solid #333;
+       box-shadow: 0 0 10px rgba(229, 9, 20, 0.2);
+       transition: transform 0.3s ease;
+   }
+
+   .dash-card:hover {
+       transform: translateY(-5px);
+       box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+   }
+
+   .dash-card h3 {
+       font-size: 16px;
+       margin-bottom: 10px;
+       color: #aaa;
+   }
+
+   .dash-card p {
+       font-size: 20px;
+       font-weight: bold;
+   }
