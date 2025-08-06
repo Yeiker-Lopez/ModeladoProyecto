@@ -17,6 +17,7 @@ export class PerfilesComponent implements OnInit {
   overlayVisible = false;
   selectedProfileId: number | null = null;
   selectedProfileName: string = '';
+
   pinDigits: string[] = ['', '', '', ''];
   errorMsg: string = '';
   loading = false;
@@ -91,5 +92,10 @@ export class PerfilesComponent implements OnInit {
         if (firstInput) firstInput.focus();
       }
     });
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

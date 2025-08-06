@@ -1,29 +1,47 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EntertainHub | Perfiles</title>
+
+</head>
 <body>
-    <h2>¿Quién está viendo?</h2>
-    <div class="perfiles">
-        <div class="perfil" *ngFor="let p of perfiles" (click)="openPinOverlay(p)">
-            <span>{{ p.nombre }}</span>
+    <header>
+        <h1>EntertainHub</h1>
+
+        <div class="perfil-bar">
+            <button (click)="logout()">Cerrar Sesión</button>
         </div>
-    </div>
+    </header>
+    <div class="perfiless">
 
-    <!-- Overlay -->
-    <div class="overlay" [class.active]="overlayVisible">
-        <div class="pin-box">
-            <button class="close-btn" (click)="closeOverlay()" title="Cerrar">✖</button>
-            <h3>Ingresa tu PIN</h3>
-            <div>
-                <input maxlength="1" id="digit0" [(ngModel)]="pinDigits[0]" (input)="handleInput(0, $event)">
-                <input maxlength="1" id="digit1" [(ngModel)]="pinDigits[1]" (input)="handleInput(1, $event)">
-                <input maxlength="1" id="digit2" [(ngModel)]="pinDigits[2]" (input)="handleInput(2, $event)">
-                <input maxlength="1" id="digit3" [(ngModel)]="pinDigits[3]">
+
+
+        <h2>¿Quién está viendo?</h2>
+        <div class="perfiles">
+            <div class="perfil" *ngFor="let p of perfiles" (click)="openPinOverlay(p)">
+                <span>{{ p.nombre }}</span>
             </div>
+        </div>
 
-            <button (click)="validatePin()" [disabled]="loading">
-                <span *ngIf="!loading">Entrar</span>
-                <span *ngIf="loading">⏳ Validando...</span>
-            </button>
+        <!-- Overlay -->
+        <div class="overlay" [class.active]="overlayVisible">
+            <div class="pin-box">
+                <button class="close-btn" (click)="closeOverlay()" title="Cerrar">✖</button>
+                <h3>Ingresa tu PIN</h3>
+                <div>
+                    <input maxlength="1" id="digit0" [(ngModel)]="pinDigits[0]" (input)="handleInput(0, $event)">
+                    <input maxlength="1" id="digit1" [(ngModel)]="pinDigits[1]" (input)="handleInput(1, $event)">
+                    <input maxlength="1" id="digit2" [(ngModel)]="pinDigits[2]" (input)="handleInput(2, $event)">
+                    <input maxlength="1" id="digit3" [(ngModel)]="pinDigits[3]">
+                </div>
 
-            <div class="error-msg">{{ errorMsg }}</div>
+                <button (click)="validatePin()" [disabled]="loading">
+                    <span *ngIf="!loading">Entrar</span>
+                    <span *ngIf="loading">⏳ Validando...</span>
+                </button>
+
+                <div class="error-msg">{{ errorMsg }}</div>
+            </div>
         </div>
     </div>
 </body>

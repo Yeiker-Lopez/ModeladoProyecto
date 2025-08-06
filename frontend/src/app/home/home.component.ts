@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PerfilService } from '../services/perfiles.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,7 @@ import { PerfilService } from '../services/perfiles.service';
 export class HomeComponent implements OnInit {
   mostrarAudio = true;
   mostrarVideo = true;
-  constructor(private perfilesService: PerfilService, private router: Router) { }
+  constructor(private perfilesService: PerfilService, private router: Router, private route: ActivatedRoute,) { }
 
   recomendaciones: any[] = [];
   playlists: any[] = [];
@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     const perfil = JSON.parse(localStorage.getItem('perfilActivo') || '{}');
     const tipoSuscripcion = perfil?.suscripcion?.tipo;
+
     this.perfilNombre = perfil?.nombre || 'Perfil';
 
     if (tipoSuscripcion?.permiteAudio) {
@@ -72,7 +73,33 @@ export class HomeComponent implements OnInit {
       next: res => this.playlists = res,
       error: err => console.error('Error cargando playlists', err)
     });
+
+    this.route.paramMap.subscribe(params => {
+      this.modoOffline = this.route.snapshot.queryParamMap.get('offline') === 'true';
+      this.toggleModoOffline();
+    });
   }
+  modoOffline: boolean = false;
+  contenidosDescargados: any[] = [];
+
+  toggleModoOffline(): void {
+    if (this.modoOffline) {
+      const perfilId = JSON.parse(localStorage.getItem('perfilActivo') || '{}')?.perfilId;
+
+      this.perfilesService.getContenidosDescargados(perfilId).subscribe({
+        next: res => this.contenidosDescargados = res,
+        error: err => console.error('Error obteniendo contenido offline', err)
+      });
+    }
+  }
+
+  setModoOffline(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.modoOffline = input.checked;
+    this.toggleModoOffline();
+  }
+
+
   convertirTiempo(segundos: number): string {
     if (!segundos) return '0h 0m';
     const h = Math.floor(segundos / 3600);
@@ -87,6 +114,19 @@ export class HomeComponent implements OnInit {
   cerrarOverlayPlaylist(): void {
     this.mostrarOverlayPlaylist = false;
     this.playlistSeleccionada = null;
+  }
+  reproducirContenidoDesdePlaylist(contenido: any, playlistId: number): void {
+    const slug = contenido.titulo.toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/reproductor', contenido.id, slug], {
+      queryParams: { playlist: playlistId }
+    });
+  }
+  reproducirContenido(contenido: any): void {
+    const slug = contenido.titulo.toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/reproductor', contenido.id, slug], {
+      queryParams: this.modoOffline ? { offline: 'true' } : {}
+    });
+
   }
 
   cambiarPin(): void {

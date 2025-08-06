@@ -209,6 +209,51 @@
        color: white;
    }
 
+   .switch {
+       position: relative;
+       display: inline-block;
+       width: 50px;
+       height: 26px;
+   }
+
+   .switch input {
+       opacity: 0;
+       width: 0;
+       height: 0;
+   }
+
+   .slider {
+       position: absolute;
+       cursor: pointer;
+       top: 0;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       background-color: #666;
+       transition: 0.4s;
+       border-radius: 26px;
+   }
+
+   .slider:before {
+       position: absolute;
+       content: "";
+       height: 20px;
+       width: 20px;
+       left: 3px;
+       bottom: 3px;
+       background-color: white;
+       transition: 0.4s;
+       border-radius: 50%;
+   }
+
+   input:checked+.slider {
+       background-color: #e50914;
+   }
+
+   input:checked+.slider:before {
+       transform: translateX(24px);
+   }
+
    .perfil-bar button:hover {
        background-color: #e50914;
        border-color: #e50914;
@@ -378,13 +423,11 @@
    .dash-cards {
        display: flex;
        gap: 20px;
-       flex-wrap: wrap;
    }
 
    .dash-card {
        background: #1a1a1a;
        border-radius: 8px;
-       padding: 20px;
        flex: 1 1 200px;
        color: white;
        text-align: center;
@@ -408,3 +451,73 @@
        font-size: 20px;
        font-weight: bold;
    }
+
+   /* HEADER RESPONSIVO */
+   .responsive-header {
+       display: flex;
+       flex-direction: row;
+       gap: 10px;
+       padding: 20px 40px;
+       background-color: #111;
+       border-bottom: 1px solid #222;
+   }
+
+   .responsive-header h1 {
+       color: #e50914;
+       font-size: 28px;
+       margin: 0;
+   }
+
+   .perfil-bar {
+       display: flex;
+       flex-direction: row;
+       flex-wrap: wrap;
+       justify-content: space-between;
+       align-items: center;
+       gap: 10px;
+   }
+
+   .botones-header {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 10px;
+   }
+
+   .botones-header button {
+       flex: 1 1 auto;
+   }
+
+   @media (max-width: 600px) {
+       .botones-header {
+           flex-direction: row;
+           width: 100%;
+       }
+
+       .responsive-header {
+           padding: 15px 20px;
+           flex-direction: column;
+       }
+
+       .responsive-header h1 {
+           font-size: 22px;
+       }
+   }
+
+   .dashboard-analitico {
+       padding: 20px 40px;
+       background-color: #111;
+       border-bottom: 1px solid #222;
+   }
+
+
+
+   /* ESCALA para móvil, manteniendo distribución horizontal */
+   @media (max-width: 600px) {
+       .dash-card h3{
+           font-size: 12px !important;
+       }
+       .dash-card p{
+           font-size: 15px !important;
+       }
+   }
+

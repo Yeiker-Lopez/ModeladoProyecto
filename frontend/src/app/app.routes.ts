@@ -5,6 +5,7 @@ import { PerfilesComponent } from './perfiles/perfiles.component';
 import { LandingComponent } from './landing/landing.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
+import { ReproductorComponent } from './reproductor/reproductor.component';
 
 export const routes: Routes = [
 
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'perfiles', component: PerfilesComponent },
     { path: 'suscripciones', component: LandingComponent },
     { path: 'home', component: HomeComponent },
+    { path: 'reproductor/:id/:slug', component: ReproductorComponent },
     { path: '**', redirectTo: 'login', pathMatch: 'full' },
 
 ];

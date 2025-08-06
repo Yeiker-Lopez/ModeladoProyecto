@@ -1,24 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EntertainHub - Inicio</title>
+    <title>EntertainHub | Inicio</title>
 
 </head>
 
 <body>
-    <header>
+    <header class="responsive-header">
         <h1>EntertainHub</h1>
 
         <div class="perfil-bar">
             <span class="perfil-nombre">👤 {{ perfilNombre }}</span>
-            <button (click)="cambiarPin()">Cambiar PIN</button>
-            <button (click)="volverAPerfiles()">Cambiar Perfil</button>
-            <button (click)="logout()">Cerrar Sesión</button>
+            <div class="botones-header">
+                <button (click)="cambiarPin()">Cambiar PIN</button>
+                <button (click)="volverAPerfiles()">Cambiar Perfil</button>
+                <button (click)="logout()">Cerrar Sesión</button>
+            </div>
         </div>
     </header>
+
     <!-- Overlay para cambio de PIN -->
     <!-- Overlay para cambio de PIN -->
     <div class="pin-overlay" *ngIf="mostrarOverlayPin">
@@ -67,99 +67,123 @@
 
         </div>
     </div>
-
-    <!-- DASHBOARD ANALÍTICO -->
-    <section class="dashboard-analitico">
-        <div class="dash-cards">
-            <div class="dash-card">
-                <h3>🎧 Audios reproducidos</h3>
-                <p>{{ dashboard?.totalAudio }}</p>
-            </div>
-            <div class="dash-card">
-                <h3>🎬 Videos vistos</h3>
-                <p>{{ dashboard?.totalVideo }}</p>
-            </div>
-            <div class="dash-card">
-                <h3>🕒 Tiempo total</h3>
-                <p>{{ convertirTiempo(dashboard?.tiempoTotal) }}</p>
-            </div>
-            <div class="dash-card">
-                <h3>📈 Actividad semanal</h3>
-                <p>{{ dashboard?.incrementoSemanal }}</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Recomendaciones -->
-    <!-- Recomendaciones -->
-    <div class="section-title">✨ Recomendado para ti</div>
-    <div class="carousel">
-        <div class="item" *ngFor="let reco of recomendaciones">
-            <img [src]="reco.portada" alt="Recomendación" />
-            <div class="audio-badge" *ngIf="reco.tipo === 'audio'">AUDIO</div>
-            <div class="video-badge" *ngIf="reco.tipo === 'video'">VIDEO</div>
-            <div class="overlay">{{ reco.titulo }}</div>
-        </div>
+    <div style="display: flex; justify-content: flex-end; align-items: center; padding: 10px 40px;">
+        <label style="color: white; margin-right: 10px;">Modo Offline</label>
+        <label class="switch">
+            <input type="checkbox" [(ngModel)]="modoOffline" (ngModelChange)="toggleModoOffline()" />
+            <span class="slider round"></span>
+        </label>
     </div>
-
-
-    <!-- Tus Playlists -->
-    <div class="section-title">🎧 Tus Playlists</div>
-    <div class="carousel">
-        <div class="item" *ngFor="let pl of playlists" (click)="abrirOverlayPlaylist(pl)">
-            <img [src]="pl.portada" alt="Playlist" />
-            <div class="audio-badge" *ngIf="pl.tipo === 'audio'">AUDIO</div>
-            <div class="video-badge" *ngIf="pl.tipo === 'video'">VIDEO</div>
-            <div class="mixta-badge" *ngIf="pl.tipo === 'mixta'">MIXTA</div>
-
-            <div class="overlay">{{ pl.nombre }}</div>
-        </div>
-    </div>
-
-    <!-- Carrusel de Música -->
-    <!-- Audio -->
-    <div class="section-title" *ngIf="mostrarAudio && audios.length">🎵 Música y Podcasts</div>
-    <div class="carousel" *ngIf="mostrarAudio && audios.length">
-        <div class="item" *ngFor="let audio of audios">
-            <img [src]="audio.portada" alt="Audio" />
-            <div class="audio-badge">AUDIO</div>
-            <div class="overlay">{{ audio.titulo }}</div>
-        </div>
-    </div>
-
-    <!-- Video -->
-    <div class="section-title" *ngIf="mostrarVideo && videos.length">🎬 Películas y Series</div>
-    <div class="carousel" *ngIf="mostrarVideo && videos.length">
-        <div class="item" *ngFor="let video of videos">
-            <img [src]="video.portada" alt="Video" />
-            <div class="video-badge">VIDEO</div>
-            <div class="overlay">{{ video.titulo }}</div>
-        </div>
-    </div>
-
-    <!-- Overlay de Playlist -->
-    <!-- Overlay de Playlist (modo lista horizontal compacta) -->
-    <div class="pin-overlay" *ngIf="mostrarOverlayPlaylist">
-        <div class="playlist scrollable-modal">
-            <h2>{{ playlistSeleccionada?.nombre }}</h2>
-
-            <div class="playlist-list">
-                <div class="playlist-item" *ngFor="let c of playlistSeleccionada?.contenidos">
-                    <img [src]="c.portada" alt="Portada" />
-                    <div class="info">
-                        <strong>{{ c.titulo }}</strong>
-                        <p>{{ c.descripcion }}</p>
-                        <span class="badge" [ngClass]="{'audio': c.tipo === 'audio', 'video': c.tipo === 'video'}">{{
-                            c.tipo.toUpperCase() }}</span>
-                    </div>
+    <ng-container *ngIf="!modoOffline">
+        <!-- DASHBOARD ANALÍTICO -->
+        <section class="dashboard-analitico">
+            <!-- Primera fila -->
+            <div class="dash-cards">
+                <div class="dash-card">
+                    <h3>🎧 Audios reproducidos</h3>
+                    <p>{{ dashboard?.totalAudio }}</p>
+                </div>
+                <div class="dash-card">
+                    <h3>🎬 Videos vistos</h3>
+                    <p>{{ dashboard?.totalVideo }}</p>
+                </div>
+                <div class="dash-card">
+                    <h3>🕒 Tiempo total</h3>
+                    <p>{{ convertirTiempo(dashboard?.tiempoTotal) }}</p>
                 </div>
             </div>
 
-            <button class="cancelar" (click)="cerrarOverlayPlaylist()">Cerrar</button>
+            <!-- Segunda fila: audio y video más reproducidos -->
+            <div class="dash-cards" style="margin-top: 30px;">
+                <div class="dash-card" *ngIf="dashboard?.audioMasReproducido">
+                    <h3>🎵 Audio más reproducido</h3>
+                    <p style="font-size: 16px;">{{ dashboard.audioMasReproducido.titulo }}</p>
+                    <p style="font-size: 14px; color: #aaa;">Duración total: {{
+                        convertirTiempo(dashboard.audioMasReproducido.duracion) }}</p>
+                </div>
+                <div class="dash-card" *ngIf="dashboard?.videoMasReproducido">
+                    <h3>🎞️ Video más reproducido</h3>
+                    <p style="font-size: 16px;">{{ dashboard.videoMasReproducido.titulo }}</p>
+                    <p style="font-size: 14px; color: #aaa;">Duración total: {{
+                        convertirTiempo(dashboard.videoMasReproducido.duracion) }}</p>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+        <div class="section-title">🎧 Tus Playlists</div>
+        <div class="carousel">
+            <div class="item" *ngFor="let pl of playlists" (click)="abrirOverlayPlaylist(pl)">
+                <img [src]="pl.portada" alt="Playlist" />
+                <div class="audio-badge" *ngIf="pl.tipo === 'audio'">AUDIO</div>
+                <div class="video-badge" *ngIf="pl.tipo === 'video'">VIDEO</div>
+                <div class="mixta-badge" *ngIf="pl.tipo === 'mixta'">MIXTA</div>
+
+                <div class="overlay">{{ pl.nombre }}</div>
+            </div>
         </div>
-    </div>
 
+        <div class="section-title" *ngIf="mostrarAudio && audios.length">🎵 Música y Podcasts</div>
+        <div class="carousel" *ngIf="mostrarAudio && audios.length">
+            <div class="item" *ngFor="let audio of audios" (click)="reproducirContenido(audio)">
+                <img [src]="audio.portada" alt="Audio" />
+                <div class="audio-badge">AUDIO</div>
+                <div class="overlay">{{ audio.titulo }}</div>
+            </div>
+        </div>
 
+        <div class="section-title" *ngIf="mostrarVideo && videos.length">🎬 Películas y Series</div>
+        <div class="carousel" *ngIf="mostrarVideo && videos.length">
+            <div class="item" *ngFor="let video of videos" (click)="reproducirContenido(video)">
+                <img [src]="video.portada" alt="Video" />
+                <div class="video-badge">VIDEO</div>
+                <div class="overlay">{{ video.titulo }}</div>
+            </div>
+        </div>
+        <div class="section-title">✨ Recomendado para ti</div>
+        <div class="carousel">
+            <div class="item" *ngFor="let reco of recomendaciones" (click)="reproducirContenido(reco)">
+                <img [src]="reco.portada" alt="Recomendación" />
+                <div class="audio-badge" *ngIf="reco.tipo === 'audio'">AUDIO</div>
+                <div class="video-badge" *ngIf="reco.tipo === 'video'">VIDEO</div>
+                <div class="overlay">{{ reco.titulo }}</div>
+            </div>
+        </div>
+        <div class="pin-overlay" *ngIf="mostrarOverlayPlaylist">
+            <div class="playlist scrollable-modal">
+                <h2>{{ playlistSeleccionada?.nombre }}</h2>
+
+                <div class="playlist-list">
+                    <div class="playlist-item" (click)="reproducirContenidoDesdePlaylist(c, playlistSeleccionada.id)"
+                        *ngFor="let c of playlistSeleccionada?.contenidos">
+                        <img [src]="c.portada" alt="Portada" />
+                        <div class="info">
+                            <strong>{{ c.titulo }}</strong>
+                            <p>{{ c.descripcion }}</p>
+                            <span class="badge"
+                                [ngClass]="{'audio': c.tipo === 'audio', 'video': c.tipo === 'video'}">{{
+                                c.tipo.toUpperCase() }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="cancelar" (click)="cerrarOverlayPlaylist()">Cerrar</button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="modoOffline">
+        <div class="section-title">🎧 Contenido descargado (Offline)</div>
+
+        <div class="carousel">
+            <div class="item" *ngFor="let c of contenidosDescargados" (click)="reproducirContenido(c)">
+                <img [src]="c.portada" />
+                <div class="audio-badge" *ngIf="c.tipo === 'audio'">AUDIO</div>
+                <div class="video-badge" *ngIf="c.tipo === 'video'">VIDEO</div>
+                <div class="overlay">✔ {{ c.titulo }}</div>
+            </div>
+        </div>
+    </ng-container>
 </body>
-
-</html>

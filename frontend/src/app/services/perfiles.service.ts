@@ -45,4 +45,9 @@ export class PerfilService {
         return this.http.get<any[]>(`${this.apiURL}/recomendaciones/${perfilId}`);
     }
 
+    getContenidosDescargados(perfilId: number) {
+        return this.http.get<any[]>(`${this.apiURL}/contenido/descargados/${perfilId}`);
+    }
+
+
 }
