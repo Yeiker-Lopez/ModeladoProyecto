@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PerfilesModule } from './perfiles/perfiles.module';
+import { ReproductorModule } from './reproductor/reproductor.module';
 
 
 @Module({
@@ -20,7 +21,7 @@ import { PerfilesModule } from './perfiles/perfiles.module';
         password: config.get<string>('DB_PASSWORD') as string,
         database: config.get<string>('DB_NAME') as string,
         entities: [__dirname + '/_entitys/*.entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: false,
         ssl: config.get<string>('DB_SSL') === 'true'
           ? { rejectUnauthorized: false }
           : false,
@@ -28,7 +29,8 @@ import { PerfilesModule } from './perfiles/perfiles.module';
       inject: [ConfigService],
     }),
     AuthModule,
-    PerfilesModule
+    PerfilesModule,
+    ReproductorModule
   ],
   controllers: [AppController],
   providers: [AppService],

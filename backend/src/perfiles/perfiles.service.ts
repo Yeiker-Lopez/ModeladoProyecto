@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ContenidoDescargado } from 'src/_entitys/contenido-descargado.entity';
 import { Contenido } from 'src/_entitys/contenido.entity';
+import { HistorialReproduccion } from 'src/_entitys/historial-reproduccion.entity';
 import { MetricaUso } from 'src/_entitys/metrica-uso.entity';
 import { Perfil } from 'src/_entitys/perfil.entity';
 import { Playlist } from 'src/_entitys/playlist.entity';
@@ -18,6 +20,8 @@ export class PerfilesService {
         @InjectRepository(Recomendacion) private readonly recomendacionRepo: Repository<Recomendacion>,
         @InjectRepository(MetricaUso) private readonly metricaRepo: Repository<MetricaUso>,
         @InjectRepository(Playlist) private readonly playlistRepo: Repository<Playlist>,
+        @InjectRepository(ContenidoDescargado) private readonly descargaRepo: Repository<ContenidoDescargado>,
+        @InjectRepository(HistorialReproduccion) private readonly historialRepo: Repository<HistorialReproduccion>,
 
     ) { }
 
@@ -110,7 +114,7 @@ export class PerfilesService {
     }
 
     async obtenerDashboardAnalitico(perfilId: number) {
-        const [metricas, total] = await Promise.all([
+        const [metricas, total, historial] = await Promise.all([
             this.metricaRepo.find({
                 where: { perfil: { id: perfilId } },
             }),
@@ -118,7 +122,11 @@ export class PerfilesService {
                 .createQueryBuilder('metrica')
                 .select('SUM(metrica.tiempoReproduccion)', 'total')
                 .where('metrica.perfilId = :perfilId', { perfilId })
-                .getRawOne()
+                .getRawOne(),
+            this.historialRepo.find({
+                where: { perfil: { id: perfilId } },
+                relations: ['contenido'],
+            }),
         ]);
 
         const totalAudio = metricas.filter(m => m.tipo === 'audio').length;
@@ -140,13 +148,46 @@ export class PerfilesService {
             ? (((ultimaSemana.length - semanaAnterior.length) / semanaAnterior.length) * 100).toFixed(1)
             : '100';
 
+        // Agrupar historial por contenido
+        const duracionPorContenido: Record<number, { titulo: string; tipo: 'audio' | 'video'; duracion: number }> = {};
+
+        for (const item of historial) {
+            const id = item.contenido.id;
+            if (!duracionPorContenido[id]) {
+                duracionPorContenido[id] = {
+                    titulo: item.contenido.titulo,
+                    tipo: item.contenido.tipo,
+                    duracion: 0,
+                };
+            }
+            duracionPorContenido[id].duracion += item.duracion;
+        }
+
+        // Encontrar audio y video más reproducidos
+        const contenidos = Object.values(duracionPorContenido);
+
+        const audioTop = contenidos
+            .filter(c => c.tipo === 'audio')
+            .sort((a, b) => b.duracion - a.duracion)[0];
+
+        const videoTop = contenidos
+            .filter(c => c.tipo === 'video')
+            .sort((a, b) => b.duracion - a.duracion)[0];
+
         return {
             totalAudio,
             totalVideo,
-            tiempoTotal: Number(total.total || 0), // en segundos
+            tiempoTotal: Number(total.total || 0),
             incrementoSemanal: `${incremento}%`,
+            audioMasReproducido: audioTop
+                ? { titulo: audioTop.titulo, duracion: audioTop.duracion }
+                : null,
+            videoMasReproducido: videoTop
+                ? { titulo: videoTop.titulo, duracion: videoTop.duracion }
+                : null,
         };
     }
+
 
     async obtenerRecomendacionesDesdePlaylists(perfilId: number) {
         const playlists = await this.playlistRepo.find({
@@ -195,7 +236,9 @@ export class PerfilesService {
         });
 
         return playlists.map(pl => {
-            const portadaPrincipal = pl.contenidos.find(c => c.orden === 1)?.contenido?.portada || null;
+            // Ordenar los contenidos por "orden" de forma ascendente
+            const contenidosOrdenados = [...pl.contenidos].sort((a, b) => a.orden - b.orden);
+            const portadaPrincipal = contenidosOrdenados[0]?.contenido?.portada || null;
 
             return {
                 id: pl.id,
@@ -203,7 +246,7 @@ export class PerfilesService {
                 tipo: pl.tipo,
                 fechaCreacion: pl.fechaCreacion,
                 portada: portadaPrincipal,
-                contenidos: pl.contenidos.map(pc => ({
+                contenidos: contenidosOrdenados.map(pc => ({
                     id: pc.contenido.id,
                     titulo: pc.contenido.titulo,
                     descripcion: pc.contenido.descripcion,
@@ -216,5 +259,15 @@ export class PerfilesService {
         });
     }
 
+
+    async obtenerContenidosDescargados(perfilId: number): Promise<Contenido[]> {
+        const registros = await this.descargaRepo.find({
+            where: { perfil: { id: perfilId } },
+            relations: ['contenido'],
+            order: { fecha: 'DESC' }, // opcional: últimos primero
+        });
+
+        return registros.map(r => r.contenido);
+    }
 
 }
